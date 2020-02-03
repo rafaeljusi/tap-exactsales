@@ -8,6 +8,7 @@ logger = singer.get_logger()
 class ExactsalesStream(object):
     tap = None
     endpoint = ''
+    base_endpoint = ''
     key_properties = []
     state_field = None
     initial_state = None
@@ -161,7 +162,7 @@ class ExactsalesIterStream(ExactsalesStream):
             self.next_start = self.start  # note pagination for next loop
 
             # find all deals ids for deals added or with stage changes after start and before stop
-            this_page_ids = self.find_deal_ids(response.json()['data'], start=checkpoint, stop=self.stream_start)
+            this_page_ids = self.find_deal_ids(response.json(), start=checkpoint, stop=self.stream_start)
 
             self.these_deals = this_page_ids  # need the list of deals to check for last id in the tap
             for deal_id in this_page_ids:
@@ -173,8 +174,8 @@ class ExactsalesIterStream(ExactsalesStream):
         # find all deals that were *added* after the start time and before the stop time
         added_ids = [data[i]['id']
                      for i in range(len(data))
-                     if (data[i]['add_time'] is not None
-                         and start <= pendulum.parse(data[i]['add_time']) < stop)]
+                     if (data[i]['DtCadastro'] is not None
+                         and start <= pendulum.parse(data[i]['DtCadastro']) < stop)]
 
         # find all deals that a) had a stage change at any time (i.e., the stage_change_time is not None),
         #                     b) had a stage change after the start time and before the stop time, and

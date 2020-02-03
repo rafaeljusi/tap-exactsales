@@ -1,7 +1,7 @@
 {
   "streams": [
     {
-      "tap_stream_id": "stages",
+      "tap_stream_id": "leads",
       "key_properties": [
         "id"
       ],
@@ -10,63 +10,117 @@
           "id": {
             "type": "integer"
           },
-          "order_nr": {
-            "type": [
-              "null",
-              "integer"
-            ]
-          },
-          "name": {
-            "type": [
-              "null",
-              "string"
-            ]
-          },
-          "active_flag": {
-            "type": [
-              "null",
-              "boolean"
-            ]
-          },
-          "deal_probability": {
-            "type": [
-              "null",
-              "integer"
-            ]
-          },
-          "pipeline_id": {
-            "type": [
-              "null",
-              "integer"
-            ]
-          },
-          "rotten_flag": {
-            "type": [
-              "null",
-              "boolean"
-            ]
-          },
-          "rotten_days": {
-            "type": [
-              "null",
-              "integer"
-            ]
-          },
-          "add_time": {
+          "DtAtualizacao": {
             "format": "date-time",
             "type": [
               "null",
               "string"
             ]
           },
-          "update_time": {
+          "DtCadastro": {
             "format": "date-time",
             "type": [
               "null",
               "string"
             ]
           },
-          "pipeline_name": {
+          "IntegracaoId": {
+            "type": [
+              "null",
+              "integer"
+            ]
+          },
+          "Empresa": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "Grupo": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "Vendedor": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "TelEmpresa": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "Tel2Empresa": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "LinkPublico": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "LinkMkt": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "LinkFeedBack": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "Site": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "ProdutoLead": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "Endereco": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "Cidade": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "Estado": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "Pais": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "Obs": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "Etapa": {
             "type": [
               "null",
               "string"
@@ -75,7 +129,7 @@
         },
         "type": "object"
       },
-      "stream": "stages",
+      "stream": "leads",
       "metadata": [
         {
           "breadcrumb": [
@@ -89,79 +143,7 @@
         {
           "breadcrumb": [
             "properties",
-            "order_nr"
-          ],
-          "metadata": {
-            "inclusion": "available"
-          }
-        },
-        {
-          "breadcrumb": [
-            "properties",
-            "name"
-          ],
-          "metadata": {
-            "inclusion": "available"
-          }
-        },
-        {
-          "breadcrumb": [
-            "properties",
-            "active_flag"
-          ],
-          "metadata": {
-            "inclusion": "available"
-          }
-        },
-        {
-          "breadcrumb": [
-            "properties",
-            "deal_probability"
-          ],
-          "metadata": {
-            "inclusion": "available"
-          }
-        },
-        {
-          "breadcrumb": [
-            "properties",
-            "pipeline_id"
-          ],
-          "metadata": {
-            "inclusion": "available"
-          }
-        },
-        {
-          "breadcrumb": [
-            "properties",
-            "rotten_flag"
-          ],
-          "metadata": {
-            "inclusion": "available"
-          }
-        },
-        {
-          "breadcrumb": [
-            "properties",
-            "rotten_days"
-          ],
-          "metadata": {
-            "inclusion": "available"
-          }
-        },
-        {
-          "breadcrumb": [
-            "properties",
-            "add_time"
-          ],
-          "metadata": {
-            "inclusion": "available"
-          }
-        },
-        {
-          "breadcrumb": [
-            "properties",
-            "update_time"
+            "DtAtualizacao"
           ],
           "metadata": {
             "inclusion": "automatic"
@@ -170,7 +152,160 @@
         {
           "breadcrumb": [
             "properties",
-            "pipeline_name"
+            "DtCadastro"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "IntegracaoId"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "Empresa"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "Grupo"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "Vendedor"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "TelEmpresa"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "Tel2Empresa"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "LinkPublico"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "LinkMkt"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "LinkFeedBack"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "Site"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "ProdutoLead"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "Endereco"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "Cidade"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "Estado"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "Pais"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "Obs"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "Etapa"
           ],
           "metadata": {
             "inclusion": "available"

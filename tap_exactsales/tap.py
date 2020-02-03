@@ -8,7 +8,7 @@ from singer import set_currently_syncing, metadata
 from singer.catalog import Catalog, CatalogEntry, Schema
 from .config import BASE_URL, CONFIG_DEFAULTS
 from .exceptions import InvalidResponseException
-from .streams import (StagesStream)
+from .streams import (LeadsStream)
 
 
 logger = singer.get_logger()
@@ -16,7 +16,7 @@ logger = singer.get_logger()
 
 class ExactsalesTap(object):
     streams = [
-        StagesStream()
+        LeadsStream()
     ]
 
     def __init__(self, config, state):
@@ -101,7 +101,7 @@ class ExactsalesTap(object):
             catalog_stream = catalog.get_stream(stream.schema)
             stream_metadata = metadata.to_map(catalog_stream.metadata)
 
-            if stream.id_list: # see if we want to iterate over a list of deal_ids
+            if stream.pagination: # see if we want to iterate over a list of deal_ids
 
                 for deal_id in stream.get_deal_ids(self):
                     is_last_id = False
@@ -148,10 +148,9 @@ class ExactsalesTap(object):
     def get_selected_streams(self, catalog):
         selected_streams = set()
         for stream in catalog.streams:
-            mdata = metadata.to_map(stream.metadata)
-            root_metadata = mdata.get(())
-            if root_metadata and root_metadata.get('selected') is True:
-                selected_streams.add(stream.tap_stream_id)
+            # mdata = metadata.to_map(stream.metadata)
+            # root_metadata = mdata.get(())
+            selected_streams.add(stream.tap_stream_id)
         return list(selected_streams)
 
     def do_paginate(self, stream, stream_metadata):
@@ -186,22 +185,19 @@ class ExactsalesTap(object):
 
     def iterate_response(self, response):
         payload = response.json()
-        return [] if payload['data'] is None else payload['data']
+        return [] if payload is None else payload
 
     def execute_stream_request(self, stream):
         params = {
-            'start': stream.start,
-            'limit': stream.limit
         }
         params = stream.update_request_params(params)
         return self.execute_request(stream.endpoint, params=params)
 
     def execute_request(self, endpoint, params=None):
         headers = {
-            'User-Agent': self.config['user-agent']
+            'token_exact': self.config['api_token']
         }
         _params = {
-            'api_token': self.config['api_token'],
         }
         if params:
             _params.update(params)
@@ -215,11 +211,10 @@ class ExactsalesTap(object):
         if isinstance(response, requests.Response) and response.status_code == 200:
             try:
                 payload = response.json()
-                if payload['success'] and 'data' in payload:
-                    return True
+                return True
             except (AttributeError, JSONDecodeError) as e:
                 pass
-
+                
         raise InvalidResponseException("Response with status code {} from Exactsales API is not valid, "
                                        "wonder why ..".format(response.status_code))
 

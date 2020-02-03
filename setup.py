@@ -19,8 +19,6 @@ setup(name="tap-exactsales",
           tap-exactsales=tap_exactsales.cli:main
       """,
       packages=["tap_exactsales",
-                "tap_exactsales.streams",
-                "tap_exactsales.streams.recents",
-                "tap_exactsales.streams.recents.dynamic_typing"],
+                "tap_exactsales.streams"],
       include_package_data=True,
 )

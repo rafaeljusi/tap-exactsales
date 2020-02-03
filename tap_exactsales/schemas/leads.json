@@ -1,0 +1,67 @@
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer"
+    },
+    "DtAtualizacao": {
+      "type": ["null", "string"],
+      "format": "date-time"
+    },
+    "DtCadastro": {
+      "type": ["null", "string"],
+      "format": "date-time"
+    },
+    "IntegracaoId": {
+      "type": ["null", "integer"]
+    },
+    "Empresa": {
+      "type": ["null", "string"]
+    },
+    "Grupo": {
+      "type": ["null", "string"]
+    },
+    "Vendedor": {
+      "type": ["null", "string"]
+    },
+    "TelEmpresa": {
+      "type": ["null", "string"]
+    },
+    "Tel2Empresa": {
+      "type": ["null", "string"]
+    },
+    "LinkPublico": {
+      "type": ["null", "string"]
+    },
+    "LinkMkt": {
+      "type": ["null", "string"]
+    },
+    "LinkFeedBack": {
+      "type": ["null", "string"]
+    },
+    "Site": {
+      "type": ["null", "string"]
+    },
+    "ProdutoLead": {
+      "type": ["null", "string"]
+    },
+    "Endereco": {
+      "type": ["null", "string"]
+    },
+    "Cidade": {
+      "type": ["null", "string"]
+    },
+    "Estado": {
+      "type": ["null", "string"]
+    },
+    "Pais": {
+      "type": ["null", "string"]
+    },
+    "Obs": {
+      "type": ["null", "string"]
+    },
+    "Etapa": {
+      "type": ["null", "string"]
+    }
+  }
+}

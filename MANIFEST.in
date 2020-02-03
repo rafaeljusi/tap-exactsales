@@ -1,4 +1,2 @@
 include LICENSE
 include tap_exactsales/schemas/*.json
-include tap_exactsales/schemas/recents/*.json
-include tap_exactsales/schemas/recents/dynamic_typing/*.json

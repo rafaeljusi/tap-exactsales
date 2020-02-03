@@ -1,3 +1,3 @@
-from .stages import StagesStream
+from .leads import LeadsStream
 
-__all__ = [ 'StagesStream' ]
+__all__ = [ 'LeadsStream' ]
