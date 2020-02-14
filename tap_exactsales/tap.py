@@ -101,37 +101,11 @@ class ExactsalesTap(object):
             catalog_stream = catalog.get_stream(stream.schema)
             stream_metadata = metadata.to_map(catalog_stream.metadata)
 
-            if stream.pagination: # see if we want to iterate over a list of deal_ids
-
-                for deal_id in stream.get_deal_ids(self):
-                    is_last_id = False
-
-                    if deal_id == stream.these_deals[-1]: #find out if this is last deal_id in the current set
-                        is_last_id = True
-
-                    # if last page of deals, more_items in collection will be False
-                    # Need to set it to True to get deal_id pagination for the first deal on the last page
-                    if deal_id == stream.these_deals[0]:
-                        stream.more_items_in_collection = True
-
-                    stream.update_endpoint(deal_id)
-                    stream.start = 0   # set back to zero for each new deal_id
-                    self.do_paginate(stream, stream_metadata)
-
-                    if not is_last_id:
-                        stream.more_items_in_collection = True   #set back to True for pagination of next deal_id request
-                    elif is_last_id and stream.more_ids_to_get:  # need to get the next batch of deal_ids
-                        stream.more_items_in_collection = True
-                        stream.start = stream.next_start
-                    else:
-                        stream.more_items_in_collection = False
-
-                # set the attribution window so that the bookmark will reflect the new initial_state for the next sync
-                stream.earliest_state = stream.stream_start.subtract(hours=3)
-            else:
-                # paginate
-                self.do_paginate(stream, stream_metadata)
-
+            self.do_paginate(stream, stream_metadata)
+                
+            # set the attribution window so that the bookmark will reflect the new initial_state for the next sync
+            stream.earliest_state = stream.stream_start.subtract(hours=3)
+            
             # update state / bookmarking only when supported by stream
             if stream.state_field:
                 self.state = singer.write_bookmark(self.state, stream.schema, stream.state_field,
@@ -154,8 +128,16 @@ class ExactsalesTap(object):
         return list(selected_streams)
 
     def do_paginate(self, stream, stream_metadata):
-        while stream.has_data():
+        
+        # note when the stream starts syncing
+        stream.stream_start = pendulum.now('UTC') # explicitly set timezone to UTC
 
+        # create checkpoint at inital_state to only find stage changes more recent than initial_state (bookmark)
+        checkpoint = stream.initial_state
+
+        must_get = True
+        while must_get:
+            stream.update_endpoint()
             with singer.metrics.http_request_timer(stream.schema) as timer:
                 try:
                     response = self.execute_stream_request(stream)
@@ -163,9 +145,10 @@ class ExactsalesTap(object):
                     raise e
                 timer.tags[singer.metrics.Tag.http_status_code] = response.status_code
 
-            self.validate_response(response)
+            self.validate_response(stream, response)
             self.rate_throttling(response)
-            stream.paginate(response)
+            
+            stream.start = stream.start + 1
 
             # records with metrics
             with singer.metrics.record_counter(stream.schema) as counter:
@@ -179,6 +162,8 @@ class ExactsalesTap(object):
                         if stream.write_record(row):
                             counter.increment()
                         stream.update_state(row)
+            
+            must_get = len(stream.payload) == stream.limit
 
     def get_default_config(self):
         return CONFIG_DEFAULTS
@@ -203,14 +188,14 @@ class ExactsalesTap(object):
             _params.update(params)
 
         url = "{}/{}".format(BASE_URL, endpoint)
-        logger.debug('Firing request at {} with params: {}'.format(url, _params))
+        logger.info('Firing request at {} with params: {}'.format(url, _params))
 
         return requests.get(url, headers=headers, params=_params)
 
-    def validate_response(self, response):
+    def validate_response(self, stream, response):
         if isinstance(response, requests.Response) and response.status_code == 200:
             try:
-                payload = response.json()
+                stream.payload = response.json()
                 return True
             except (AttributeError, JSONDecodeError) as e:
                 pass
