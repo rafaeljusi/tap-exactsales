@@ -11,8 +11,8 @@ setup(name="tap-exactsales",
       py_modules=["tap_exactsales"],
       install_requires=[
           "pendulum==2.0.4",
-          "requests==2.21.0",
-          "singer-python==5.4.1",
+          "requests==2.20.0",
+          "singer-python==5.8.0",
       ],
       entry_points="""
           [console_scripts]
